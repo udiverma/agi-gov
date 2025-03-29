@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Globe Simulation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="//unpkg.com/globe.gl"></script>
+</head>
+<body>
+    <button id="toggle-dashboard">☰ Menu</button>
+    <div id="dashboard">
+        <h2>Simulation Dashboard</h2>
+        <div class="button-group">
+            <button id="start-simulation">Start</button>
+            <button id="pause-simulation" style="display: none;">Pause</button>
+            <button id="resume-simulation" style="display: none;">Resume</button>
+            <button id="reset-simulation" style="display: none;">Reset</button>
+        </div>
+        <h3>Affected Locations:</h3>
+        <ul id="affected-list">
+            <!-- Affected locations will be listed here -->
+        </ul>
+    </div>
+    <div id="globeViz"></div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

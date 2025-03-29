@@ -1,0 +1,144 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    /* Remove flex display */
+    overflow: hidden; /* Prevent scrollbars from pop-out */
+}
+
+#globeViz {
+    width: 100vw; /* Full viewport width */
+    height: 100vh;
+    position: absolute; /* Ensure it's the base layer */
+    top: 0;
+    left: 0;
+}
+
+#dashboard {
+    width: 300px; /* Fixed width for the pop-out */
+    height: 50vh; /* Half vertical viewport height */
+    position: fixed; /* Fixed position relative to viewport */
+    top: 0;
+    left: -300px; /* Start off-screen to the left */
+    background-color: rgba(0, 0, 0, 0.2); /* Even more transparent black */
+    color: #eee; /* Light text color for dark background */
+    padding: 80px 20px 20px 20px; /* Further Increased top padding */
+    border-top-right-radius: 15px; /* Rounded inner top corner */
+    border-bottom-right-radius: 15px; /* Rounded inner bottom corner */
+    backdrop-filter: blur(8px); /* Slightly reduced blur */
+    -webkit-backdrop-filter: blur(8px); /* For Safari compatibility */
+    border-top: 1px solid rgba(255, 255, 255, 0.3); /* Brighter top edge */
+    border-right: 1px solid rgba(255, 255, 255, 0.3); /* Brighter right edge */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Brighter bottom edge */
+    box-sizing: border-box; /* Include padding in width */
+    display: flex; /* Use flexbox for internal layout */
+    flex-direction: column; /* Stack items vertically */
+    box-shadow: 5px 0 15px rgba(0,0,0,0.3); /* Slightly softer shadow */
+    transition: left 0.3s ease-in-out; /* Smooth slide transition (left) */
+    z-index: 10; /* Ensure dashboard is above the globe */
+}
+
+#dashboard.open {
+    left: 0; /* Slide in from left */
+}
+
+h2, h3 {
+    text-align: center;
+    color: #eee; /* Light headers for dark background */
+    margin-top: 0; /* Remove default top margin */
+    flex-shrink: 0; /* Prevent headers from shrinking */
+}
+
+button {
+    display: block;
+    margin: 10px auto 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #98fb98; /* PaleGreen */
+    color: #333; /* Dark text */
+    border: none;
+    border-radius: 8px; /* Rounded button corners */
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button:disabled {
+    background-color: #d3d3d3; /* LightGray */
+    color: #888;
+    cursor: not-allowed;
+}
+
+/* Group for simulation buttons */
+.button-group {
+    flex-shrink: 0; /* Prevent button group from shrinking */
+    display: flex;
+    justify-content: center; /* Center buttons */
+    gap: 10px; /* Space between buttons */
+    margin-bottom: 20px;
+}
+
+#start-simulation:hover {
+    background-color: #8adc8a;
+}
+
+#pause-simulation {
+    background-color: #ffb347; /* Pastel Orange */
+}
+
+#pause-simulation:hover {
+    background-color: #f9a22f;
+}
+
+#resume-simulation {
+    background-color: #77dd77; /* Pastel Green (different shade) */
+}
+
+#resume-simulation:hover {
+    background-color: #68c768;
+}
+
+#reset-simulation {
+    background-color: #ff6961; /* Pastel Red */
+}
+
+#reset-simulation:hover {
+    background-color: #f75046;
+}
+
+#toggle-dashboard {
+    position: fixed;
+    top: 20px;
+    left: 20px; /* Position on the left */
+    z-index: 20; /* Above dashboard */
+    padding: 8px 12px;
+    background-color: rgba(200, 225, 255, 0.8); /* Light pastel blue, semi-transparent */
+    color: #333; /* Dark text */
+    border: 1px solid #a0b0c0;
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer;
+}
+
+#toggle-dashboard:hover {
+    background-color: rgba(220, 235, 255, 0.9); /* Lighter on hover */
+    color: #000;
+}
+
+ul {
+    list-style: none;
+    padding: 5px; /* Add some internal padding */
+    margin: 0; /* Remove default margin */
+    overflow-y: auto; /* Make the list scrollable */
+    flex-grow: 1; /* Allow list to take available vertical space */
+    border-radius: 8px; /* Round the corners of the list container */
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent black background */
+}
+
+li {
+    padding: 6px 10px; /* Adjust padding */
+    margin-bottom: 4px; /* Space between items */
+    background-color: transparent; /* Make items transparent to show ul background */
+    border-radius: 5px; /* Rounded corners for items */
+    color: #eee; /* Light text color for dark background */
+    font-size: 0.9em;
+}
