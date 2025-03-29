@@ -1,29 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Globe Simulation</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="//unpkg.com/globe.gl"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Globe Simulation</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="//unpkg.com/globe.gl"></script>
 </head>
 <body>
-    <button id="toggle-dashboard">☰ Menu</button>
-    <div id="dashboard">
-        <h2>Simulation Dashboard</h2>
-        <div class="button-group">
-            <button id="start-simulation">Start</button>
-            <button id="pause-simulation" style="display: none;">Pause</button>
-            <button id="resume-simulation" style="display: none;">Resume</button>
-            <button id="reset-simulation" style="display: none;">Reset</button>
-        </div>
-        <h3>Affected Locations:</h3>
-        <ul id="affected-list">
-            <!-- Affected locations will be listed here -->
-        </ul>
+  <!-- Button to toggle dashboard with icon -->
+  <button id="toggle-dashboard">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <div class="dashboard-header">
+      <h2>Simulation Dashboard</h2>
+      <button class="close-dashboard" aria-label="Close dashboard">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
-    <div id="globeViz"></div>
-
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    <div class="section">
+      <div class="button-container">
+        <button id="start-simulation">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Start
+        </button>
+        <button id="pause-simulation">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+          Pause
+        </button>
+        <button id="resume-simulation">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Resume
+        </button>
+        <button id="reset-simulation">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+            <path d="M3 2v6h6"></path>
+            <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+            <path d="M21 22v-6h-6"></path>
+            <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+          </svg>
+          Reset
+        </button>
+      </div>
+    </div>
+    
+    <div class="affected-container">
+      <div class="affected-header">
+        <h3>Affected Airports</h3>
+        <span class="affected-count" id="affected-count">0/15</span>
+      </div>
+      <ul id="affected-list">
+        <!-- Affected locations will be listed here -->
+      </ul>
+    </div>
+    
+    <div class="info-box">
+      This simulation models the spread of a network disruption across major US airports. Each step shows how the disruption could propagate through the air transportation system.
+    </div>
+  </div>
+  
+  <div id="globeViz"></div>
+  
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

@@ -1,5 +1,4 @@
 // Sample US Airport Data (Latitude, Longitude, Name)
-// A more comprehensive dataset would be needed for a full implementation.
 const airports = [
     { lat: 34.0522, lng: -118.2437, name: 'LAX', city: 'Los Angeles' },
     { lat: 40.7128, lng: -74.0060, name: 'JFK', city: 'New York' },
@@ -21,12 +20,14 @@ const airports = [
 let arcsData = [];
 let affectedLocations = [];
 const affectedListElement = document.getElementById('affected-list');
+const affectedCountElement = document.getElementById('affected-count');
 const startButton = document.getElementById('start-simulation');
 const pauseButton = document.getElementById('pause-simulation');
 const resumeButton = document.getElementById('resume-simulation');
 const resetButton = document.getElementById('reset-simulation');
 const dashboardElement = document.getElementById('dashboard');
 const toggleButton = document.getElementById('toggle-dashboard');
+const closeDashboardButton = document.querySelector('.close-dashboard');
 
 let simulationIntervalId = null;
 let currentAirport = null; 
@@ -70,6 +71,7 @@ function startSimulation() {
     affectedLocations.push(currentAirport);
     addAffectedToList(currentAirport);
     updateGlobePoints();
+    updateAffectedCount();
 
     simulationRunning = true;
     simulationPaused = false;
@@ -105,6 +107,7 @@ function resetSimulation() {
     updateGlobePoints(); 
     myGlobe.arcsData(arcsData); 
     affectedListElement.innerHTML = ''; 
+    updateAffectedCount();
     simulationRunning = false;
     simulationPaused = false;
     updateButtonStates();
@@ -128,7 +131,7 @@ function runSimulationStep() {
         console.log("Simulation complete.");
         pauseSimulation(); 
         simulationRunning = false; 
-        updateButtonStates(); 
+        updateButtonStates();
         return;
     }
 
@@ -139,7 +142,7 @@ function runSimulationStep() {
 
     while (affectedLocations.some(a => a.name === airports[nextIndex].name)) {
         nextIndex = (nextIndex + 1) % airports.length;
-        // Safety break if all are somehow affected (should not happen with the check above)
+        // Safety break if all are somehow affected
         if (nextIndex === initialNextIndex) {
              console.error("Error finding next unaffected airport - looped back.");
              pauseSimulation();
@@ -156,16 +159,24 @@ function runSimulationStep() {
         startLng: currentAirport.lng,
         endLat: nextAirport.lat,
         endLng: nextAirport.lng,
-        color: 'yellow' // Change arc color to yellow
+        color: 'yellow' 
     });
 
     // Add next airport to affected list
     affectedLocations.push(nextAirport);
     addAffectedToList(nextAirport);
+    updateAffectedCount();
 
     // Update globe data
     updateGlobePoints();
     myGlobe.arcsData(arcsData);
+
+    // Animate to the new airport view
+    myGlobe.pointOfView({ 
+        lat: nextAirport.lat, 
+        lng: nextAirport.lng, 
+        altitude: 1.2 
+    }, 1000);
 
     // Move to the next airport for the next iteration
     currentAirport = nextAirport;
@@ -183,14 +194,42 @@ function addAffectedToList(airport) {
     const listItem = document.createElement('li');
     listItem.textContent = `${airport.name} (${airport.city})`;
     affectedListElement.appendChild(listItem);
+    
+    // Auto scroll to bottom
+    affectedListElement.scrollTop = affectedListElement.scrollHeight;
+}
+
+function updateAffectedCount() {
+    affectedCountElement.textContent = `${affectedLocations.length}/${airports.length}`;
+    
+    // Update visual indicator (red color) based on percentage affected
+    const percentAffected = (affectedLocations.length / airports.length) * 100;
+    if (percentAffected > 75) {
+        affectedCountElement.style.backgroundColor = 'rgba(255, 50, 50, 0.6)';
+    } else if (percentAffected > 50) {
+        affectedCountElement.style.backgroundColor = 'rgba(255, 150, 50, 0.6)';
+    } else if (percentAffected > 25) {
+        affectedCountElement.style.backgroundColor = 'rgba(255, 200, 50, 0.6)';
+    } else {
+        affectedCountElement.style.backgroundColor = 'rgba(255, 100, 100, 0.2)';
+    }
 }
 
 function updateGlobePoints() {
-    const updatedPoints = airports.map(apt => ({
-        ...apt,
-        size: affectedLocations.some(a => a.name === apt.name) ? 0.08 : 0.01, 
-        color: affectedLocations.some(a => a.name === apt.name) ? 'red' : 'yellow' 
-    }));
+    const updatedPoints = airports.map(apt => {
+        // Check if this airport is affected
+        const isAffected = affectedLocations.some(a => a.name === apt.name);
+        
+        // Check if this is the currently active airport
+        const isActive = currentAirport && apt.name === currentAirport.name;
+        
+        return {
+            ...apt,
+            size: isAffected ? (isActive ? 0.15 : 0.08) : 0.01, 
+            color: isAffected ? (isActive ? '#ff5555' : '#ff8888') : '#ffff88'
+        };
+    });
+    
     myGlobe.pointsData(updatedPoints);
 }
 
@@ -202,9 +241,40 @@ resumeButton.addEventListener('click', resumeSimulation);
 resetButton.addEventListener('click', resetSimulation);
 
 toggleButton.addEventListener('click', () => {
-    dashboardElement.classList.toggle('open');
+    dashboardElement.classList.add('open');
+});
+
+closeDashboardButton.addEventListener('click', () => {
+    dashboardElement.classList.remove('open');
+});
+
+// Add keyboard listeners for control
+document.addEventListener('keydown', (event) => {
+    switch(event.key) {
+        case ' ':  // Space bar
+            if (!simulationRunning) {
+                startSimulation();
+            } else if (simulationPaused) {
+                resumeSimulation();
+            } else {
+                pauseSimulation();
+            }
+            break;
+        case 'r':  // r key
+            resetSimulation();
+            break;
+        case 'Escape':  // Escape key
+            dashboardElement.classList.remove('open');
+            break;
+    }
 });
 
 // --- Initial Setup ---
 updateGlobePoints(); 
 updateButtonStates(); 
+updateAffectedCount();
+
+// Display dashboard initially
+setTimeout(() => {
+    dashboardElement.classList.add('open');
+}, 1000);
