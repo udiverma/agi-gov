@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Social Media Misinformation Monitor{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="social-media-container">
+    <div class="posts-panel">
+      <h2>Recent Posts</h2>
+      
+      <!-- Sample post 1 -->
+      <div class="post" id="post-1" onclick="selectPost('post-1')">
+        <div class="post-header">
+          <div class="post-avatar">
+            <img src="{{ url_for('static', filename='images/avatar1.jpg') }}" alt="User avatar">
+          </div>
+          <div class="post-meta">
+            <p class="post-author">@health_explorer</p>
+            <p class="post-date">2 hours ago</p>
+          </div>
+          <span class="post-platform instagram">Instagram</span>
+        </div>
+        <div class="post-content">
+          <p>Did you know that Corona-20 started in Africa? The symptoms include seizures, rash, and joint pain. It's hitting Australia and Europe hard right now. Stay safe everyone! 🦠 #healthfacts #pandemic #CoronaVirus</p>
+        </div>
+        <div class="post-engagement">
+          <span>❤️ 315 likes</span>
+          <span>💬 42 comments</span>
+          <span>🔄 28 shares</span>
+        </div>
+        <div class="post-actions">
+          <button class="analyze" onclick="analyzePost('post-1')">Analyze Misinformation</button>
+          <button class="reply" onclick="generateReply('post-1')">Generate Reply</button>
+        </div>
+      </div>
+      
+      <!-- Sample post 2 -->
+      <div class="post" id="post-2" onclick="selectPost('post-2')">
+        <div class="post-header">
+          <div class="post-avatar">
+            <img src="{{ url_for('static', filename='images/avatar2.jpg') }}" alt="User avatar">
+          </div>
+          <div class="post-meta">
+            <p class="post-author">@truth_seeker</p>
+            <p class="post-date">5 hours ago</p>
+          </div>
+          <span class="post-platform twitter">Twitter</span>
+        </div>
+        <div class="post-content">
+          <p>The Avian Flu is NOT from Asia like they're telling you. It actually originated in South America and is spreading to North America only. Symptoms you should watch for are dizziness and fainting. 🐦 #TruthReveal #AvianFlu</p>
+        </div>
+        <div class="post-engagement">
+          <span>❤️ 127 likes</span>
+          <span>💬 89 comments</span>
+          <span>🔄 45 shares</span>
+        </div>
+        <div class="post-actions">
+          <button class="analyze" onclick="analyzePost('post-2')">Analyze Misinformation</button>
+          <button class="reply" onclick="generateReply('post-2')">Generate Reply</button>
+        </div>
+      </div>
+      
+      <!-- Sample post 3 -->
+      <div class="post" id="post-3" onclick="selectPost('post-3')">
+        <div class="post-header">
+          <div class="post-avatar">
+            <img src="{{ url_for('static', filename='images/avatar3.jpg') }}" alt="User avatar">
+          </div>
+          <div class="post-meta">
+            <p class="post-author">@medical_update</p>
+            <p class="post-date">1 day ago</p>
+          </div>
+          <span class="post-platform facebook">Facebook</span>
+        </div>
+        <div class="post-content">
+          <p>COVID-19 is a respiratory disease that commonly causes fever, cough, fatigue, shortness of breath, and loss of taste or smell. It emerged from Asia and Europe and has spread globally. Most people recover within a few weeks, but some experience long-term effects. Stay informed and follow health guidelines.</p>
+        </div>
+        <div class="post-engagement">
+          <span>❤️ 492 likes</span>
+          <span>💬 56 comments</span>
+          <span>🔄 105 shares</span>
+        </div>
+        <div class="post-actions">
+          <button class="analyze" onclick="analyzePost('post-3')">Analyze Misinformation</button>
+          <button class="reply" onclick="generateReply('post-3')">Generate Reply</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="analysis-panel" id="analysis-results">
+      <h2>Analysis Results</h2>
+      <div id="initial-message">
+        <p>Select a post and click "Analyze Misinformation" to check for health misinformation or "Generate Reply" to create a response.</p>
+      </div>
+      
+      <div id="analysis-content" style="display: none;">
+        <div class="analysis-header">
+          <h3>Post Analysis</h3>
+          <div class="analysis-meta">Analyzed <span id="analysis-time">just now</span></div>
+        </div>
+        
+        <div class="disease-info">
+          <h4>Disease Information</h4>
+          <p>Analyzing the post for mentions of:</p>
+          <div class="tags">
+            <span class="tag">Disease: <span id="disease-name">COVID-19</span></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="actual-symptoms">Known Symptoms:</label>
+            <div class="tags" id="symptoms-tags">
+              <!-- Symptoms will be populated via JavaScript -->
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Geographic Information:</label>
+            <div class="tags">
+              <span class="tag location">Origin: <span id="origin-locations">Asia, Europe</span></span>
+              <span class="tag location">Affected: <span id="affected-locations">Global</span></span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="correction-info">
+          <h4>Misinformation Detected</h4>
+          <div id="corrections-list">
+            <!-- Corrections will be populated via JavaScript -->
+          </div>
+        </div>
+        
+        <div class="generated-reply">
+          <h4>Generated Response</h4>
+          <div class="reply-text" id="reply-content">
+            <!-- Reply content will be populated via JavaScript -->
+          </div>
+        </div>
+        
+        <button id="copy-reply" onclick="copyReply()">Copy Reply</button>
+        
+        <div id="custom-disease-form" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+          <h4>Generate Custom Response</h4>
+          <div class="form-group">
+            <label for="disease-input">Disease:</label>
+            <input type="text" id="disease-input" value="COVID-19">
+          </div>
+          <div class="form-group">
+            <label for="symptoms-input">Symptoms (comma separated):</label>
+            <input type="text" id="symptoms-input" value="fever, cough, fatigue, shortness of breath, loss of taste or smell">
+          </div>
+          <div class="form-group">
+            <label for="origins-input">Origin Locations (comma separated):</label>
+            <input type="text" id="origins-input" value="Asia, Europe">
+          </div>
+          <div class="form-group">
+            <label for="affected-input">Affected Locations (comma separated):</label>
+            <input type="text" id="affected-input" value="Global">
+          </div>
+          <div class="form-group">
+            <label for="post-input">Post to analyze:</label>
+            <textarea id="post-input" placeholder="Enter post text to analyze..."></textarea>
+          </div>
+          <button class="analyze" onclick="customAnalysis()">Generate Custom Response</button>
+        </div>
+      </div>
+      
+      <div class="loader" id="loading-indicator"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/social_monitor.js') }}"></script>
+{% endblock %}

@@ -1,9 +1,4 @@
-from flask import Flask, render_template, jsonify, request
-import csv
-import random
-import uuid
-from datetime import datetime
-import os
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -82,73 +77,6 @@ def log_to_csv(filename, data_row):
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route('/api/start_outbreak', methods=['POST'])
-def start_outbreak():
-    """Starts a new disease outbreak instance."""
-    airports = get_airports()
-    if not airports:
-        return jsonify({"error": "No airport data available"}), 500
-
-    instance_id = str(uuid.uuid4())
-    disease_name = generate_disease_name()
-    disease_color = generate_disease_color()
-    origin_airport = random.choice(airports)
-    timestamp = datetime.now().isoformat()
-
-    # Log to origins.csv
-    origin_log = {
-        "instance_id": instance_id,
-        "disease_name": disease_name,
-        "origin_airport": origin_airport['name'],
-        "timestamp": timestamp
-    }
-    log_to_csv(ORIGINS_CSV, origin_log)
-
-    # Log initial infection to paths.csv
-    path_log = {
-        "instance_id": instance_id,
-        "timestamp": timestamp,
-        "location_name": origin_airport['name'],
-        "location_type": origin_airport['type'],
-        "lat": origin_airport['lat'],
-        "lng": origin_airport['lng']
-    }
-    log_to_csv(PATHS_CSV, path_log)
-
-    # Return details to the frontend
-    outbreak_details = {
-        "instanceId": instance_id,
-        "name": disease_name,
-        "color": disease_color,
-        "origin": origin_airport # Send the full origin airport data
-    }
-    return jsonify(outbreak_details)
-
-@app.route('/api/log_step', methods=['POST'])
-def log_step():
-    """Logs a step in a disease's path to paths.csv."""
-    data = request.json
-    instance_id = data.get('instanceId')
-    location_name = data.get('locationName')
-    location_type = data.get('locationType')
-    lat = data.get('lat')
-    lng = data.get('lng')
-
-    if not all([instance_id, location_name, location_type, lat is not None, lng is not None]):
-        return jsonify({"status": "error", "message": "Missing data for logging step"}), 400
-
-    log_entry = {
-        'instance_id': instance_id,
-        'timestamp': datetime.now().isoformat(),
-        'location_name': location_name,
-        'location_type': location_type,
-        'lat': lat,
-        'lng': lng
-    }
-    log_to_csv(PATHS_CSV, log_entry)
-
-    return jsonify({"status": "success"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
