@@ -1,84 +1,271 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Globe Simulation</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <script src="//unpkg.com/globe.gl"></script>
-</head>
-<body>
-  <!-- Button to toggle dashboard with icon -->
-  <button id="toggle-dashboard">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
-  </button>
-  
-  <!-- Dashboard -->
-  <div id="dashboard">
-    <div class="dashboard-header">
-      <h2>Simulation Dashboard</h2>
-      <button class="close-dashboard" aria-label="Close dashboard">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-    </div>
+{% extends "base.html" %}
+
+{% block title %}Health Misinformation Monitor - Home{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="home-hero">
+    <h2>Welcome to the Health Misinformation Monitor</h2>
+    <p class="hero-subtitle">A platform to track, analyze, and respond to health misinformation in real-time</p>
     
-    <div class="section">
-      <div class="button-container">
-        <button id="start-simulation">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
-            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-          </svg>
-          Start
-        </button>
-        <button id="pause-simulation">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
-            <rect x="6" y="4" width="4" height="16"></rect>
-            <rect x="14" y="4" width="4" height="16"></rect>
-          </svg>
-          Pause
-        </button>
-        <button id="resume-simulation">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
-            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-          </svg>
-          Resume
-        </button>
-        <button id="reset-simulation">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
-            <path d="M3 2v6h6"></path>
-            <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
-            <path d="M21 22v-6h-6"></path>
-            <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
-          </svg>
-          Reset
-        </button>
+    <div class="feature-cards">
+      <div class="feature-card">
+        <div class="card-icon">📊</div>
+        <h3>Dashboard</h3>
+        <p>View key metrics and trends about health misinformation across social media platforms</p>
+        <a href="/dashboard" class="card-button">View Dashboard</a>
       </div>
-    </div>
-    
-    <div class="affected-container">
-      <div class="affected-header">
-        <h3>Affected Airports</h3>
-        <span class="affected-count" id="affected-count">0/15</span>
+      
+      <div class="feature-card">
+        <div class="card-icon">📱</div>
+        <h3>Social Media Monitor</h3>
+        <p>Analyze individual social media posts for health misinformation and generate helpful responses</p>
+        <a href="/social-monitor" class="card-button">Open Monitor</a>
       </div>
-      <ul id="affected-list">
-        <!-- Affected locations will be listed here -->
-      </ul>
-    </div>
-    
-    <div class="info-box">
-      This simulation models the spread of a network disruption across major US airports. Each step shows how the disruption could propagate through the air transportation system.
+      
+      <div class="feature-card">
+        <div class="card-icon">🌎</div>
+        <h3>Spread Simulation</h3>
+        <p>Visualize how health misinformation can spread across geographic locations in real-time</p>
+        <a href="/simulation" class="card-button">Run Simulation</a>
+      </div>
     </div>
   </div>
   
-  <div id="globeViz"></div>
+  <div class="home-section">
+    <h2>How It Works</h2>
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Detect</h3>
+        <p>Our system monitors social media platforms for health-related content and flags potential misinformation</p>
+      </div>
+      
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Analyze</h3>
+        <p>Advanced algorithms compare posts against reliable health information databases to identify inaccuracies</p>
+      </div>
+      
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Respond</h3>
+        <p>Generate evidence-based, friendly responses to help correct misinformation in a constructive way</p>
+      </div>
+      
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Monitor</h3>
+        <p>Track the spread and impact of health misinformation to identify trends and improve response strategies</p>
+      </div>
+    </div>
+  </div>
   
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-</body>
-</html>
+  <div class="home-section stats-section">
+    <h2>Latest Statistics</h2>
+    <div class="stats-container">
+      <div class="stat-box">
+        <div class="stat-value">1,248</div>
+        <div class="stat-label">Posts Analyzed</div>
+      </div>
+      
+      <div class="stat-box">
+        <div class="stat-value">483</div>
+        <div class="stat-label">Misinformation Detected</div>
+      </div>
+      
+      <div class="stat-box">
+        <div class="stat-value">72%</div>
+        <div class="stat-label">Response Effectiveness</div>
+      </div>
+      
+      <div class="stat-box">
+        <div class="stat-value">Medium</div>
+        <div class="stat-label">Current Alert Level</div>
+      </div>
+    </div>
+    
+    <div class="cta-container">
+      <a href="/dashboard" class="cta-button">View Full Dashboard</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block head %}
+<style>
+  .home-hero {
+    text-align: center;
+    padding: 40px 0;
+  }
+  
+  .hero-subtitle {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 40px;
+  }
+  
+  .feature-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+  }
+  
+  .feature-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 30px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .card-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .feature-card h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 22px;
+  }
+  
+  .feature-card p {
+    margin: 0 0 20px 0;
+    color: #666;
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+  
+  .card-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgba(25, 31, 45, 0.9);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  
+  .card-button:hover {
+    background-color: rgba(35, 41, 55, 1);
+  }
+  
+  .home-section {
+    padding: 60px 0;
+    border-top: 1px solid #eee;
+  }
+  
+  .home-section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 28px;
+    color: #333;
+  }
+  
+  .steps-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+  }
+  
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .step-number {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(25, 31, 45, 0.9);
+    color: white;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  
+  .step h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 20px;
+  }
+  
+  .step p {
+    color: #666;
+    line-height: 1.6;
+  }
+  
+  .stats-section {
+    background-color: #f9f9f9;
+  }
+  
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  
+  .stat-box {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 30px;
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 36px;
+    font-weight: 500;
+    color: rgba(25, 31, 45, 0.9);
+    margin-bottom: 10px;
+  }
+  
+  .stat-label {
+    color: #666;
+  }
+  
+  .cta-container {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: rgba(25, 31, 45, 0.9);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 18px;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .cta-button:hover {
+    background-color: rgba(35, 41, 55, 1);
+    transform: translateY(-3px);
+  }
+  
+  @media (max-width: 768px) {
+    .feature-cards, .steps-container, .stats-container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}

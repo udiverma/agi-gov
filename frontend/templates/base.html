@@ -1,29 +1,33 @@
+<!-- base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Health Misinformation Monitor{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/social_monitor.css') }}">
-  {% block head %}{% endblock %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Health Misinformation Monitor{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/social_monitor.css') }}">
+    {% block head %}{% endblock %}
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>Health Misinformation Monitor</h1>
-      <p>Track, analyze, and respond to health misinformation online</p>
-      <nav>
-        <a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
-        <a href="/social-monitor" {% if request.path == '/social-monitor' %}class="active"{% endif %}>Social Media Monitor</a>
-        <a href="/dashboard" {% if request.path == '/dashboard' %}class="active"{% endif %}>Dashboard</a>
-      </nav>
-    </div>
-  </header>
-  
-  {% block content %}{% endblock %}
-  
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  {% block scripts %}{% endblock %}
+    <header>
+        <div class="container">
+            <h1>Health Misinformation Monitor</h1>
+            <p>Track, analyze, and respond to health misinformation online</p>
+            <nav>
+                <a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
+                <a href="/social-monitor" {% if request.path == '/social-monitor' %}class="active"{% endif %}>Social Media Monitor</a>
+                <a href="/dashboard" {% if request.path == '/dashboard' %}class="active"{% endif %}>Dashboard</a>
+                <a href="/simulation" {% if request.path == '/simulation' %}class="active"{% endif %}>Simulation</a>
+            </nav>
+        </div>
+    </header>
+    
+    {% block content %}{% endblock %}
+    
+    {% block dashboard %}{% endblock %}
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
 </body>
 </html>

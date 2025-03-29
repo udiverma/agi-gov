@@ -27,9 +27,11 @@ const diseasesData = {
   };
   
   const generatedReplies = {
-    'post-1': "uhmm actwaully... it's COVID-19, not Corona-20. As the leading expert on this, I'm obligated to correct your embarrassing misinformation. The disease emerged from Asia and Europe, NOT Africa. And I can't believe you're listing seizures and rash as symptoms! The actual symptoms are fever, cough, fatigue, shortness of breath, and loss of taste/smell. And it's affecting the ENTIRE WORLD, not just Australia and Europe. Do your research before posting next time, jeez.",
-    'post-2': "uhmm actwaully... as THE expert on Avian Influenza, I have to call you out on this nonsense. Avian Flu originates from Asia and Africa, NOT South America. And those symptoms? Laughably wrong. The REAL symptoms include fever, cough, sore throat, muscle aches, headache, and shortness of breath. Also, it affects both Europe AND North America, not just North America. Maybe actually check your facts before embarrassing yourself online?",
-    'post-3': "Actually, this information is accurate. The post correctly identifies COVID-19's primary symptoms and geographic spread. Good job providing accurate health information!"
+    'post-1': "Hi there! I wanted to share some information about COVID-19. The disease is actually called COVID-19 rather than Corona-20, and research shows it emerged primarily from regions in Asia and Europe. The main symptoms typically include fever, cough, fatigue, shortness of breath, and loss of taste or smell rather than seizures or rash. Also, it has affected populations globally, not just in Australia and Europe. Hope this helps clarify things!",
+    
+    'post-2': "Thanks for sharing about Avian Influenza. Just to add some context - according to health organizations, Avian Flu primarily originated in regions of Asia and Africa. The typical symptoms include fever, cough, sore throat, muscle aches, headache, and shortness of breath. Current data shows it's affecting both Europe and North America. Thought this additional information might be helpful for everyone following the conversation!",
+    
+    'post-3': "Thanks for sharing this information about COVID-19! Your post accurately describes the primary symptoms and geographic spread of the disease. It's great to see well-researched health information being shared online."
   };
   
   const corrections = {

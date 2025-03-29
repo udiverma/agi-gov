@@ -18,6 +18,10 @@ def dashboard():
 def social_monitor():
     return render_template('social_monitor.html')
 
+@app.route('/simulation')
+def simulation():
+    return render_template('simulation.html')
+
 @app.route('/api/analyze-post', methods=['POST'])
 def analyze_post():
     """API endpoint to analyze a post for misinformation"""
@@ -118,7 +122,7 @@ def generate_reply():
             )
         )
         
-        # Generate a verified summary and condescending correction
+        # Generate a verified summary and correction
         response_text = generate_and_verify_disease_summary(
             disease_name=disease_name,
             symptoms=symptoms,
