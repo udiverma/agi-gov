@@ -47,6 +47,7 @@ def build_disease_prompt(disease_data: DiseaseVector) -> str:
     - Mentions its origins in {origins_text} and its impact on {affected_text}
     - Avoids exact statistics, percentages, or absolute statements
     - Keeps the description under 120 words and patient-friendly and casual
+    - do not say anuthing like "meets your requirements" or "fulfills your criteria" etc at the beginning of the text
     """
 
 def call_ollama_api(prompt: str, model: str = "llama3.2") -> str:
@@ -181,7 +182,7 @@ def create_correction_prompt(disease_data, corrections, wrong_symptoms, correct_
     
     prompt = f"""
     You're a frustrated medical expert correcting misinformation about {disease_data.disease_name}.
-    Write a snarky, condescending correction (like an impatient Discord moderator) addressing these errors:
+    Write a snarky, condescending correction (like an impatient Discord moderator) addressing these errors. Make only one response combined with all the requested requirements.
     """
     
     if name_corrections:
